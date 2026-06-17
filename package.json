@@ -1,0 +1,49 @@
+{
+  "name": "antigravity-status-monitor",
+  "displayName": "Agent Status",
+  "description": "Displays a large traffic light indicating the active Antigravity agent's busy/idle/waiting status, visible from far away.",
+  "version": "1.0.0",
+  "publisher": "flow",
+  "icon": "resources/icon.png",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "antigravity-status.show",
+        "title": "Agent Status: Open Large Traffic Light",
+        "category": "Agent Status"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "antigravity-status-container",
+          "title": "Agent Status",
+          "icon": "resources/traffic-lights.svg"
+        }
+      ]
+    },
+    "views": {
+      "antigravity-status-container": [
+        {
+          "type": "webview",
+          "id": "antigravityStatusSidebar",
+          "name": "Traffic Light Monitor"
+        }
+      ]
+    }
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.80.0",
+    "eslint": "^8.45.0"
+  }
+}
