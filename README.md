@@ -10,6 +10,8 @@ This is a premium, high-visibility traffic light extension designed for the **Go
 - 🟡 **Yellow Flashing (Action Required)**: The agent is waiting for your manual confirmation or input (e.g. approving a terminal command, answering a question, or allowing file changes).
 - 🔴 **Red (Busy)**: The agent is actively busy (thinking, running code, analyzing files, or searching the web).
 
+![Traffic Light States Preview](resources/ss.JPG)
+
 ---
 
 ## 🛠️ Features
