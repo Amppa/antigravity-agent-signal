@@ -438,8 +438,8 @@
 
     <!-- Toolbar controls -->
     <div class="controls" style="margin-top: 5px;">
-      <button class="btn active" id="soundToggleBtn" onclick="toggleSound()">
-        <span>🔊</span> Sound On
+      <button class="btn" id="soundToggleBtn" onclick="toggleSound()">
+        🔇 Sound Off
       </button>
     </div>
 
@@ -480,7 +480,7 @@
 
   <script>
     let currentStatus = 'idle';
-    let soundEnabled = true;
+    let soundEnabled = false;
     let audioCtx = null;
     let yellowSimTimeout = null;
     let isSimulationActive = false;
@@ -520,6 +520,28 @@
           break;
       }
     });
+
+    // Auto-unlock AudioContext on first user interaction
+    const unlockAudio = () => {
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume().then(() => {
+            console.log('AudioContext resumed via user interaction.');
+          }).catch(e => console.error('AudioContext resume failed:', e));
+        }
+      } catch (e) {
+        console.error('Failed to initialize AudioContext:', e);
+      }
+      window.removeEventListener('click', unlockAudio);
+      window.removeEventListener('keydown', unlockAudio);
+      window.removeEventListener('touchstart', unlockAudio);
+    };
+    window.addEventListener('click', unlockAudio);
+    window.addEventListener('keydown', unlockAudio);
+    window.addEventListener('touchstart', unlockAudio);
 
     // Sound setup
     function toggleSound() {

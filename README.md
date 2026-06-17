@@ -40,15 +40,25 @@ Alternatively, open this folder in the IDE and press **F5** to start a new Exten
 
 ## 🔌 Activating CDP Mode (Recommended for Yellow Flashing Light)
 
-To allow the extension to inspect the live window DOM and instantly trigger the flashing yellow light upon showing permission dialogs, launch the Antigravity IDE with the remote debugging port enabled:
+### Why is the yellow light not triggered without CDP? (Log Limitations)
+Without enabling CDP (Chromium Developer Tools Protocol), the extension relies entirely on monitoring the local conversation log file (`transcript.jsonl`) to determine status.
+However, to optimize performance and writing efficiency, the IDE **does not immediately write pending tool steps to the log file on disk** while the agent is waiting for user approval (the file is updated only after tool completion or once the conversation turn finishes). Consequently, under log-only mode, the extension cannot read any "waiting" signals in real-time when the dialog is open.
 
-### Windows:
-Launch the IDE from your terminal/command prompt:
-```powershell
-& "Antigravity IDE.exe" --remote-debugging-port=9000
-```
+### How to enable CDP in your IDE?
+To instantly trigger the yellow light upon showing permission dialogs, the extension needs to inspect the live window DOM directly. This requires launching the IDE with remote debugging port 9000 enabled:
 
-*Note: If remote debugging is not enabled, the extension automatically falls back to **Log-Watching Mode**, which uses file parser heuristics.*
+1. **Close all open windows** of your IDE.
+2. **Configure your shortcut (Recommended for Windows)**:
+   - Right-click your IDE desktop or start menu shortcut and select **Properties**.
+   - In the **Target** field, append ` --remote-debugging-port=9000` to the end of the executable path (ensure there is a space before the option).
+     *Example: `"C:\Program Files\Antigravity IDE\Antigravity.exe" --remote-debugging-port=9000`*
+   - Click **OK** to save.
+3. **Alternative: Launching from Terminal**:
+   If you launch the IDE from a command line terminal, run it with the following parameter:
+   ```powershell
+   & "Antigravity IDE.exe" --remote-debugging-port=9000
+   ```
+4. Once launched with this parameter, the **Connection Status** at the bottom of the traffic light panel will display a green **Connected (Port 9000)**, and the live yellow light detection will work in real-time!
 
 ---
 
